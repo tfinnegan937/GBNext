@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/GBNext.dir/main.cpp.o CMakeFiles/GBNext.dir/GBNext.cpp.o CMakeFiles/GBNext.dir/MemoryObject.cpp.o CMakeFiles/GBNext.dir/VolatileMemory.cpp.o CMakeFiles/GBNext.dir/ROM.cpp.o CMakeFiles/GBNext.dir/MemoryMap.cpp.o -o GBNext 

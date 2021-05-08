@@ -1,0 +1,3 @@
+/home/tfinnegan/CLionProjects/GBNext/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/tfinnegan/CLionProjects/GBNext/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/tfinnegan/CLionProjects/GBNext/cmake-build-debug/CMakeFiles/GBNext.dir
