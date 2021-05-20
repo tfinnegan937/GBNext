@@ -52,7 +52,7 @@ void MemoryMap::Initialize() {
 
 }
 
-MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
+MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
     if(location < 0x8000){
         return TypeROM;
     }else if(location < 0xA000){
