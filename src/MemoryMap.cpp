@@ -41,11 +41,38 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
 }
 
 void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
+    MemoryType type = GetMemoryObject(location);
 
+    //TODO Lock the map
+    switch(type){
+        case TypeROM:
+            rom->WriteTo(value, location);
+            break;
+        case TypeVideo:
+            //TODO Return the read value
+            break;
+        case TypeEmpty:
+            //Do nothing
+            break;
+        case TypeInterrupt:
+            //TODO Return interrupt register
+            break;
+        case TypeSprite:
+            //TODO Return value of sprite memory location
+            break;
+        case TypeIO:
+            ioPorts->WriteTo(value, location);
+            break;
+        case TypeVolatile:
+            mainMemory->WriteTo(value, location);
+            break;
+    }
 }
-
+//Used for zeroing out spaces of memory
 void MemoryMap::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
-
+    for(int i = start; i < end; i++){
+        WriteTo(value, i);
+    }
 }
 
 void MemoryMap::Initialize() {
