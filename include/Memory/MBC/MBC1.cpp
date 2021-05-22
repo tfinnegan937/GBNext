@@ -9,14 +9,11 @@
 void MBC1::WriteTo(uint8_t value, uint16_t location) {
     Region region = GetRegion(location);
     switch(region){
-        case RegBank0:
-            Bank0[location] = value;
-            break;
-        case RegROMBank:
-            WriteROMBank(value, location);
-            break;
         case RegRAMBank:
             WriteRAMBank(value, location);
+            break;
+        default:
+            WriteROMBank(value, location);
             break;
     }
 
@@ -102,7 +99,22 @@ void MBC1::WriteRAMBank(uint8_t value, uint16_t location) {
 
 void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
 
- //
+    if(location < 2000){
+        uint8_t check = value & 0x0F;
+        switch(check){
+            case 0x00:
+                RAMEnabled = true;
+                break;
+            case 0x0A:
+                RAMEnabled = false;
+                break;
+            default:
+                //Do nothing
+                break;
+        }
+    }else if(location < 4000){ //TODO Handle larger ROM Bank Spaces
+        SwitchROMBank(value);
+    }else if(location)
 
 }
 
