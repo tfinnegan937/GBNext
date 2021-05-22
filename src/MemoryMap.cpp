@@ -81,22 +81,24 @@ void MemoryMap::Initialize() {
 
 MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
     if(location < 0x8000){
-        return TypeROM;
-    }else if(location < 0xA000){
-        return TypeVideo;
+        return TypeROM; //Actual ROM memory
+    }else if(location < 0xA000) {
+        return TypeVideo; //VRAM
+    }else if(location < 0xC000){
+        return TypeROM; //Switchable RAM bank. Handled in ROM
     }else if(location < 0xFE00){
-        return TypeVolatile;
+        return TypeVolatile; //Internal RAM + Echo
     }else if(location < 0xFEA0){
-        return TypeSprite;
+        return TypeSprite; //Sprite attribute memory
     }else if(location < 0xFF00){
-        return TypeEmpty;
+        return TypeEmpty; //Empty and unusable
     }else if(location < 0xFF4C){
-        return TypeIO;
+        return TypeIO; //Serial IO ports
     }else if (location < 0xFF80){
-        return TypeEmpty;
+        return TypeEmpty; //Empty and unusable
     }else if (location < 0xFFFF){
-        return TypeVolatile;
+        return TypeVolatile; //Additional Internal RAM
     }else{
-        return TypeInterrupt;
+        return TypeInterrupt; //Interrupt Register
     }
 }
