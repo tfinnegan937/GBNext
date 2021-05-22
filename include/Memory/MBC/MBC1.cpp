@@ -99,7 +99,7 @@ void MBC1::WriteRAMBank(uint8_t value, uint16_t location) {
 
 void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
 
-    if(location < 2000){
+    if(location < 0x2000){
         uint8_t check = value & 0x0F;
         switch(check){
             case 0x00:
@@ -112,9 +112,15 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
                 //Do nothing
                 break;
         }
-    }else if(location < 4000){ //TODO Handle larger ROM Bank Spaces
+    }else if(location < 0x4000){ //TODO Handle larger ROM Bank Spaces
         SwitchROMBank(value);
-    }else if(location)
+    }else if(location < 0x5FFF){
+        SwitchRAMBank(value);
+    }else if(location < 0x7FFF){
+        //TODO Handle banking mode.
+    }else{
+        //TODO Handle Error
+    }
 
 }
 
