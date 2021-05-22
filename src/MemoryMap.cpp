@@ -102,3 +102,7 @@ MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
         return TypeInterrupt; //Interrupt Register
     }
 }
+
+MemoryMap::MemoryMap() {
+    mainMemory.reset(new VolatileMemory());
+}
