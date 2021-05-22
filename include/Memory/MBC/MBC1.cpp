@@ -90,19 +90,30 @@ void MBC1::Initialize() {
 }
 
 void MBC1::SwitchROMBank(uint16_t number) {
-    curROMBankIndex = number & 0x1F; //Input is only 5 bits
-
+    //Roll over if max number of ROM banks is exceeded.
+    uint16_t adjusted_num = number;
+    while(adjusted_num > NumROMBanks){
+        adjusted_num -= NumROMBanks;
+    }
+    curROMBankIndex = adjusted_num & 0x1F; //Input is only 5 bits
     //The below handles the fact that zero-first-nibble bank numbers always map to bank# + 1
     if(curROMBankIndex == 0x00 ){ //If the lower five bits are zero, increment them and check the upper two bits
                                   //And the banking mode in SwitchBank0
         curROMBankIndex++;
-        SwitchBank0(number & 0xF0); //Does nothing if Banking mode is Simple.
+        SwitchBank0(adjusted_num & 0xF0); //Does nothing if Banking mode is Simple.
     }
 
 }
 
 void MBC1::SwitchRAMBank(uint16_t number) {
     uint16_t masked = number & 0x03; // Input is only three bits
+
+    //Mask to maximum number of RAM banks.
+    //Roll over if exceeded.
+    while(masked > NumRAMBanks){
+        masked -= NumRAMBanks;
+    }
+    //RAM bank only changes if RAM banking is present
     if(NumRAMBanks > 1) {
         curRAMBankIndex = masked;
     }
