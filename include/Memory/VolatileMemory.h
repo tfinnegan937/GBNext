@@ -29,16 +29,20 @@
  *
  * When Color Game Boy is implemented the range D000 - DFFF will become switchable RAM banks.
  */
-#define VOLMEMSIZE 0x3E7D
+#define VOLMEM_SIZE 0x3E7D
 
 class VolatileMemory : MemoryObject{
 private:
-    std::array<uint8_t, VOLMEMSIZE> volMem;
-    uint16_t GetMemoryIndex(uint16_t location);
+    std::array<uint8_t, VOLMEM_SIZE> volMem;
+    static uint16_t GetMemoryIndex(uint16_t location);
 public:
     uint8_t ReadAt(uint16_t location) override;
 
-    void WriteTo(uint8_t value, uint16_t location) override;
+    void WriteTo(uint8_t value, uint16_t location) override; //Be careful with this function. If you
+                                                             //Try to write from LOWRAM to HIGHRAM
+                                                             //It will throw an error as it will
+                                                             //try to write to the memory locations in between the
+                                                             // spaces.
 
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override;
 

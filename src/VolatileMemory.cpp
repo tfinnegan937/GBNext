@@ -70,8 +70,8 @@ uint16_t VolatileMemory::GetMemoryIndex(uint16_t location) {
 
         std::stringstream stream;
         stream << std::hex << location;
-        throw(std::runtime_error("Memory Indexing Error: Location " + stream.str() + "called in volatile memory."
-        + " This value is out of bounds."));
+        throw(std::runtime_error("Memory Indexing Error: Location " + stream.str() + " called in volatile memory."
+        + " This value is out of bounds for this object."));
 
     }
     return 0;
