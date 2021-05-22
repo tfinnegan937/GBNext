@@ -6,7 +6,7 @@
 #define GBNEXT_MEMORYBANKCONTROLLER_H
 #include "Memory/MemoryObject.h"
 
-class MemoryBankController {
+class MemoryBankController : MemoryObject{
 private:
 public:
     enum BankType{
@@ -24,8 +24,13 @@ public:
     MBC5RAMBat,
     };
 
-    virtual void SwitchROMBank(int number) = 0;
-    virtual void SwitchRAMBank(int number) = 0;
+    virtual void SwitchROMBank(uint16_t number) = 0;
+    virtual void SwitchRAMBank(uint16_t number) = 0;
+
+    void Initialize() override {};
+    void WriteTo(uint8_t value, uint16_t location) override {};
+    void WriteRange(uint8_t value, uint16_t start, uint16_t end) override{};
+    uint8_t ReadAt(uint16_t location) override{return 0xFF;};
 };
 
 
