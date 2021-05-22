@@ -26,6 +26,7 @@ private:
         TypeEmpty //No memory is mapped to this range. This exists to make the code more readable.
     };
 
+    //See the GetMemoryObject and ReadAt functions to see how these are mapped to the machine's actual memory map.
     shared_ptr<VolatileMemory> mainMemory;
     shared_ptr<ROM> rom;
     shared_ptr<IOPorts> ioPorts;
