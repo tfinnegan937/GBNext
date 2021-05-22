@@ -11,7 +11,8 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
     //TODO Lock the map
     switch(type){
         case TypeROM:
-            readValue = rom->ReadAt(location);
+            //readValue = rom->ReadAt(location);
+            readValue = 0x0000;
             break;
         case TypeVideo:
             //TODO Return the read value
@@ -29,7 +30,8 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
             readValue = 0x0000;
             break;
         case TypeIO:
-            readValue = ioPorts->ReadAt(location);
+            //readValue = ioPorts->ReadAt(location);
+            readValue = 0x0000;
             break;
         case TypeVolatile:
             readValue = mainMemory->ReadAt(location);
@@ -104,5 +106,5 @@ MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
 }
 
 MemoryMap::MemoryMap() {
-    mainMemory.reset(new VolatileMemory());
+    mainMemory = std::make_shared<VolatileMemory>();
 }

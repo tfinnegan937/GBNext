@@ -12,8 +12,8 @@
 #define LOWRAMBANKEND 0xDFFF
 #define ECHOSTART 0xE000
 #define ECHOEND 0xFDFF
-#define HIGHRAMSTART 0xF80
-#define HIGHRAMEND 0xFFE
+#define HIGHRAMSTART 0xFF80
+#define HIGHRAMEND 0xFFFE
 
 #include <stdexcept>
 uint8_t VolatileMemory::ReadAt(uint16_t location) {
