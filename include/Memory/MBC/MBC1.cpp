@@ -50,7 +50,7 @@ void MBC1::Initialize() {
                                        //But it accounts for the fact that banks $00, $20, $40, and $60
                                        //map to (bank# + 1). Also handled in SwitchROMBank.
 
-        for(int i = 0; i < NumROMBanks - 1; i++){ //Subtract one ROM bank to account for bank 0
+        for(int i = 0; i < NumROMBanks - 1; i++){ //Subtract one Cartridge bank to account for bank 0
             std::array<uint8_t, 0x4000> newBank{};
             newBank.fill(0x00);
             ROMBanks.push_back(newBank);
@@ -90,7 +90,7 @@ void MBC1::Initialize() {
 }
 
 void MBC1::SwitchROMBank(uint16_t number) {
-    //Roll over if max number of ROM banks is exceeded.
+    //Roll over if max number of Cartridge banks is exceeded.
     uint16_t adjusted_num = number;
     while(adjusted_num > NumROMBanks){
         adjusted_num -= NumROMBanks;
@@ -131,9 +131,9 @@ void MBC1::WriteRAMBank(uint8_t value, uint16_t location) {
 }
 
 void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
-    //ROM, obviously, cannot be changed.
+    //Cartridge, obviously, cannot be changed.
     //This function handles the functionality that occurs when specific
-    //Areas of ROM are written to.
+    //Areas of Cartridge are written to.
 
     if(location < 0x2000){ //RAM Enable Register
 
@@ -143,12 +143,12 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
             RAMEnabled = false;
         }
 
-    }else if(location < 0x4000){ //ROM Bank number
+    }else if(location < 0x4000){ //Cartridge Bank number
         if(NumROMBanks > 2){
             SwitchROMBank(value);
         }
 
-    }else if(location < 0x6000 && mode == Advanced){ //High ROM Bank Number/ RAM Bank Number
+    }else if(location < 0x6000 && mode == Advanced){ //High Cartridge Bank Number/ RAM Bank Number
 
         if(NumROMBanks > 32) {
             //Bank index is 5 bits, this region is the upper two bits.
@@ -161,7 +161,7 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
         }
 
     }else if(location < 0x8000){ //Banking Mode
-        uint8_t advanced = value & 0x01;
+        uint8_t advanced = value & 0x01; //All bits aside from bit 0 are don't cares.
 
         if(advanced){
             mode = Advanced;
@@ -169,7 +169,7 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
             mode = Simple;
         }
     }else{
-        throw(std::runtime_error("Attempt to write to ROM value greater than 0x7FFF"));
+        throw(std::runtime_error("Attempt to write to Cartridge value greater than 0x7FFF"));
     }
 
 }
@@ -198,11 +198,11 @@ MBC1::Region MBC1::GetRegion(uint16_t location) {
     }else if (location < 0x8000){
         return RegROMBank;
     }else if (location < 0xA000){
-        throw(std::runtime_error("Error: Video Memory Access from ROM Memory"));
+        throw(std::runtime_error("Error: Video Memory Access from Cartridge Memory"));
     }else if (location < 0xC000){
         return RegRAMBank;
     }else{
-        throw(std::runtime_error("Error: Memory location requested from ROM is greater than cartridge region"));
+        throw(std::runtime_error("Error: Memory location requested from Cartridge is greater than cartridge region"));
     }
 }
 

@@ -2,11 +2,11 @@
 // Created by tfinnegan on 5/7/21.
 //
 
-#ifndef GBNEXT_ROM_H
-#define GBNEXT_ROM_H
+#ifndef GBNEXT_CARTRIDGE_H
+#define GBNEXT_CARTRIDGE_H
 #include "MemoryObject.h"
 
-class ROM : MemoryObject{
+class Cartridge : MemoryObject{
 public:
     uint8_t ReadAt(uint16_t location) override;
 
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //GBNEXT_ROM_H
+#endif //GBNEXT_CARTRIDGE_H

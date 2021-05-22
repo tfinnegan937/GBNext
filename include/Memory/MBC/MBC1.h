@@ -31,7 +31,7 @@ private:
     uint8_t NumROMBanks;
     uint8_t NumRAMBanks;
     bool RAMEnabled;
-    BankType Bank0; //Switchable if in large ROM mode
+    BankType Bank0; //Switchable if in large Cartridge mode
     BankType ROMBanks;
     BankType RAMBanks;
 

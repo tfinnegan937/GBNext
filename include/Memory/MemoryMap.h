@@ -6,7 +6,7 @@
 #define GBNEXT_MEMORYMAP_H
 #include <memory>
 #include "MemoryObject.h"
-#include "ROM.h"
+#include "Cartridge.h"
 #include "VolatileMemory.h"
 #include "IOPorts.h"
 
@@ -18,7 +18,7 @@ private:
 
     enum MemoryType{ //For selecting the correct memory object
         TypeVolatile, //All RAM aside from cartridge RAM
-        TypeROM, //ROM, switchable ROM banks, and switchable RAM banks
+        TypeCartridge, //Cartridge, switchable Cartridge banks, and switchable RAM banks
         TypeIO, //I/O ports
         TypeVideo, //VRAM. Similar to TypeVolatile, but has protections based on HBlank and VBlank
         TypeSprite, //Sprite memory. Similar to TypeVolatile, but split into such a way as to identify each individual sprite
@@ -28,7 +28,7 @@ private:
 
     //See the GetMemoryObject and ReadAt functions to see how these are mapped to the machine's actual memory map.
     shared_ptr<VolatileMemory> mainMemory;
-    shared_ptr<ROM> rom;
+    shared_ptr<Cartridge> rom;
     shared_ptr<IOPorts> ioPorts;
     //helper functions
     static MemoryType GetMemoryObject(uint16_t location);

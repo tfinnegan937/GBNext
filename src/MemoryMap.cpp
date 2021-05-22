@@ -10,7 +10,7 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
 
     //TODO Lock the map
     switch(type){
-        case TypeROM:
+        case TypeCartridge:
             //readValue = rom->ReadAt(location);
             readValue = 0x0000;
             break;
@@ -47,7 +47,7 @@ void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
 
     //TODO Lock the map
     switch(type){
-        case TypeROM:
+        case TypeCartridge:
             rom->WriteTo(value, location);
             break;
         case TypeVideo:
@@ -83,11 +83,11 @@ void MemoryMap::Initialize() {
 
 MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
     if(location < 0x8000){
-        return TypeROM; //Actual ROM memory
+        return TypeCartridge; //Actual Cartridge memory
     }else if(location < 0xA000) {
         return TypeVideo; //VRAM
     }else if(location < 0xC000){
-        return TypeROM; //Switchable RAM bank. Handled in ROM
+        return TypeCartridge; //Switchable RAM bank. Handled in Cartridge
     }else if(location < 0xFE00){
         return TypeVolatile; //Internal RAM + Echo
     }else if(location < 0xFEA0){

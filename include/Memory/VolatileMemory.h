@@ -10,7 +10,7 @@
  * VolatileMemory
  *-----------------------
  * This is a memory object for handling the Game Boy's internal RAM. This does not include the switchable RAM banks,
- * which are handled in the ROM memory as that exists on-cartridge, and all switchable elements should be handled in a
+ * which are handled in the Cartridge memory as that exists on-cartridge, and all switchable elements should be handled in a
  * single object. This object is strictly the volatile memory that is always available.
  *
  * IMPORTANT: Though this object does not represent contiguous blocks of memory, this object stores all of those
