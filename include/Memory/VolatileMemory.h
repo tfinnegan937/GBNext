@@ -13,6 +13,11 @@
  * which are handled in the ROM memory as that exists on-cartridge, and all switchable elements should be handled in a
  * single object. This object is strictly the volatile memory that is always available.
  *
+ * IMPORTANT: Though this object does not represent contiguous blocks of memory, this object stores all of those
+ * blocks in a single array and then calculates the proper index given that region's position in the array.
+ * That is, the range FF80-FFFE is stored contiguously, beginning immediately after the range C000-FDFF. C000 is mapped
+ * to index zero.
+ *
  * Memory locations:
  *
  * Internal RAM space 1: C000 - DFFF

@@ -76,7 +76,7 @@ void MemoryMap::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
 }
 
 void MemoryMap::Initialize() {
-
+    mainMemory->Initialize();
 }
 
 MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
