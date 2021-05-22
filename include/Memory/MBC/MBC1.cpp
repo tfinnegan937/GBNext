@@ -98,7 +98,9 @@ void MBC1::WriteRAMBank(uint8_t value, uint16_t location) {
 }
 
 void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
-
+    //ROM, obviously, cannot be changed.
+    //This function handles the functionality that occurs when specific
+    //Areas of ROM are written to.
     if(location < 0x2000){
         uint8_t check = value & 0x0F;
         switch(check){
