@@ -17,13 +17,13 @@ class MemoryMap : MemoryObject{
 private:
 
     enum MemoryType{ //For selecting the correct memory object
-        TypeVolatile,
-        TypeROM,
-        TypeIO,
-        TypeVideo,
-        TypeSprite,
-        TypeInterrupt,
-        TypeEmpty
+        TypeVolatile, //All RAM aside from cartridge RAM
+        TypeROM, //ROM, switchable ROM banks, and switchable RAM banks
+        TypeIO, //I/O ports
+        TypeVideo, //VRAM. Similar to TypeVolatile, but has protections based on HBlank and VBlank
+        TypeSprite, //Sprite memory. Similar to TypeVolatile, but split into such a way as to identify each individual sprite
+        TypeInterrupt, //One 8-bit register at the top of memory.
+        TypeEmpty //No memory is mapped to this range. This exists to make the code more readable.
     };
 
     shared_ptr<VolatileMemory> mainMemory;
