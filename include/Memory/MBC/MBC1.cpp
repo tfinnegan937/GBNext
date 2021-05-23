@@ -97,10 +97,11 @@ void MBC1::SwitchROMBank(uint16_t number) {
     uint16_t adjusted_num = number;
     while(adjusted_num > NumROMBanks){
         adjusted_num -= NumROMBanks;
-    }
-    curROMBankIndex = adjusted_num & 0x1F; //Input is only 5 bits
+    } //TODO Stop using the indices as registers. Create register variables and read/write to those
+      //Before switching banks
+    curROMBankIndex = adjusted_num & 0x1F ^ (curBank0Index << 5); //Input is only 5 bits
     //The below handles the fact that zero-first-nibble bank numbers always map to bank# + 1
-    if(curROMBankIndex == 0x00 ){ //If the lower five bits are zero, increment them and check the upper two bits
+    if(adjusted_num & 0x1F == 0x00 ){ //If the lower five bits are zero, increment them and check the upper two bits
                                   //And the banking mode in SwitchBank0
         curROMBankIndex++;
         SwitchBank0(adjusted_num & 0xF0); //Does nothing if Banking mode is Simple.
@@ -148,7 +149,7 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
 
     }else if(location < 0x4000){ //Cartridge Bank number
         if(NumROMBanks > 2){
-            SwitchROMBank(value & 0x1F);
+            SwitchROMBank((value & 0x1F));
         }
 
     }else if(location < 0x6000 && mode == Advanced){ //High Cartridge Bank Number/ RAM Bank Number
