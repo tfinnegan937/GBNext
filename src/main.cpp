@@ -1,14 +1,11 @@
 #include <iostream>
-#include "Memory/MemoryMap.h"
+#include "Memory/MBC/MBC1.h"
 int main() {
-    MemoryMap mem;
-    mem.Initialize();
-
-    mem.WriteRange(0xFF, 0xFF80, 0xFFFF);
-    mem.WriteRange(0xFF, 0xC000, 0xDFFF);
-    std::cout << endl;
-    for(int i = 0; i < 0x10000; i++){
-        std::cout << std::hex << i << ": " << (unsigned int) mem.ReadAt(i) << std::endl;
-    }
+    MBC1 testmbc1(96, 8);
+    testmbc1.Initialize();
+    testmbc1.WriteTo(0x01, 0x6000);
+    testmbc1.WriteTo(0x60, 0x2000);
+    testmbc1.WriteTo(0x03, 0x4000);
+    std::cout << testmbc1.GetDebugInformation();
     return 0;
 }

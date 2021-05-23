@@ -5,7 +5,7 @@
 #include "MBC1.h"
 #define RAMBankStart 0xA000
 #define ROMBankStart 0x4000
-
+#include <iostream>
 void MBC1::WriteTo(uint8_t value, uint16_t location) {
     Region region = GetRegion(location);
     switch(region){
@@ -45,12 +45,22 @@ void MBC1::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
 
 void MBC1::Initialize() {
 
+    if(NumROMBanks < 32){
+        maxBank0Index = 0;
+    }else if(NumROMBanks < 64){
+        maxBank0Index = 1;
+    }else if(NumROMBanks < 96){
+        maxBank0Index = 2;
+    }else{
+        maxBank0Index = 3;
+    }
+
     if(NumROMBanks > 0){
-        NumROMBanks = NumROMBanks + 4; //Not particularly memory-efficient
+        uint16_t ROMBankIndex = NumROMBanks + maxBank0Index; //Not particularly memory-efficient
                                        //But it accounts for the fact that banks $00, $20, $40, and $60
                                        //map to (bank# + 1). Also handled in SwitchROMBank.
 
-        for(int i = 0; i < NumROMBanks - 1; i++){ //Subtract one Cartridge bank to account for bank 0
+        for(int i = 0; i < ROMBankIndex-1; i++){ //Subtract one Cartridge bank to account for bank 0
             std::array<uint8_t, 0x4000> newBank{};
             newBank.fill(0x00);
             ROMBanks.push_back(newBank);
@@ -65,22 +75,15 @@ void MBC1::Initialize() {
         }
     }
 
+
     //Bank zero can be switched between four banks in some carts.
     std::array<uint8_t, 0x4000> newBank{};
     newBank.fill(0x00);
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < maxBank0Index + 1; i++){
         Bank0.push_back(newBank);
     }
 
-    if(NumROMBanks < 32){
-        maxBank0Index = 0;
-    }else if(NumROMBanks < 64){
-        maxBank0Index = 1;
-    }else if(NumROMBanks < 96){
-        maxBank0Index = 2;
-    }else{
-        maxBank0Index = 3;
-    }
+
 
     RAMEnabled = false;
 
@@ -145,7 +148,7 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
 
     }else if(location < 0x4000){ //Cartridge Bank number
         if(NumROMBanks > 2){
-            SwitchROMBank(value);
+            SwitchROMBank(value & 0x1F);
         }
 
     }else if(location < 0x6000 && mode == Advanced){ //High Cartridge Bank Number/ RAM Bank Number
@@ -154,7 +157,8 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
             //Bank index is 5 bits, this region is the upper two bits.
             //In case the index is higher than the masked value for whatever
             //reason, we zero-mask the two most significant bits.
-            SwitchROMBank(((value & 0x03) << 5) + (curROMBankIndex & 0x1F));
+            uint16_t index = ((value & 0x03) << 5) ^ (curROMBankIndex & 0x1F);
+            SwitchROMBank(index);
         }
         if(NumRAMBanks > 1){
             SwitchRAMBank(value);
@@ -207,13 +211,14 @@ MBC1::Region MBC1::GetRegion(uint16_t location) {
 }
 
 void MBC1::SwitchBank0(uint16_t number) {
-    if(mode == Advanced && NumROMBanks > 32){
+    if(mode == Advanced && NumROMBanks > 31){
         switch(number){
             case 0x20:
                 curBank0Index = 1;
                 break;
             case 0x40:
                 curBank0Index = 2;
+                break;
             case 0x60:
                 curBank0Index = 3;
                 break;
@@ -224,6 +229,47 @@ void MBC1::SwitchBank0(uint16_t number) {
     }
 }
 
+void MBC1::LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
+    if(index % 0x20 == 0 && index <= 0x60){
+        //This branch accounts for Bank Numbers 0x00, 0x20, 0x40, and 0x60
+        //stored at 0x0000-0x3FFF
+        Bank0[index] = bank;
+    }else{
+        ROMBanks[index] = bank;
+    }
+}
+
+void MBC1::LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
+    uint16_t mask = index & 0x03;
+
+    RAMBanks[mask] = bank;
+}
+
+std::string MBC1::GetDebugInformation() {
+    std::string output = "\n";
+
+    output += "Expected Number of RAM Banks: " + std::to_string(NumRAMBanks) + "\n";
+    output += "Actual Number of RAM Banks: " + std::to_string(RAMBanks.size()) + "\n";
+    output += "Current RAM Bank Index: " + std::to_string(curRAMBankIndex) + "\n";
+    output += "Expected Number of ROM Banks: " + std::to_string(NumROMBanks) + "\n";
+    //3 is subtracted from this number to account for the four empty ROM banks added in Initialize()
+    //To keep the indexing consistent
+    output += "Actual Number of ROM Banks: " + std::to_string(ROMBanks.size() + Bank0.size()) + "\n";
+    output += "Of which " + std::to_string(Bank0.size()) + " Are stored in Bank0,\n";
+    output += std::to_string(ROMBanks.size()) + " Are stored in the Simple ROM Bank region, \n";
+    output += "And of which " + std::to_string(maxBank0Index + 1) + " Are filler banks (Placeholder banks in Simple Bank region)\n";
+    output += "Current Bank0 Index: " + std::to_string(curBank0Index) + "\n";
+    output += "Current ROM Bank Index: " + std::to_string(curROMBankIndex) + "\n";
+    output += "Banking Mode: " + std::to_string((int)mode) + "\n";
+    output += "RAM Enabled: ";
+
+    if(RAMEnabled){
+        output+= "true\n";
+    }else{
+        output += "false\n";
+    }
+    return output;
+}
 
 
 

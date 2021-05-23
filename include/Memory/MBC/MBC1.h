@@ -10,7 +10,7 @@
 #include "MemoryBankController.h"
 #include <vector>
 #include <array>
-
+#include <string>
 #define BankType std::vector<std::array<uint8_t, 0x4000>>
 
 class MBC1 : MemoryBankController{
@@ -46,7 +46,7 @@ private:
     void WriteRAMBank(uint8_t value, uint16_t location);
     uint8_t ReadROMBank(uint16_t location);
     uint8_t ReadRAMBank(uint16_t location);
-    Region GetRegion(uint16_t location);
+    static Region GetRegion(uint16_t location);
 public:
     void WriteTo(uint8_t value, uint16_t location) override;
     uint8_t ReadAt(uint16_t location) override;
@@ -57,6 +57,10 @@ public:
     void SwitchRAMBank(uint16_t number) override;
     MBC1(int ROMBankCount, int RAMBankCount);
 
+    void LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank);
+    void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank);
+
+    std::string GetDebugInformation();
 };
 
 
