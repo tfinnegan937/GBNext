@@ -15,12 +15,13 @@
 
 class MBC1 : MemoryBankController{
 private:
+    //Given a memory region, what part of the cartridge is it stored in?
     enum Region{
         RegBank0,
         RegRAMBank,
         RegROMBank
     };
-
+    //Simple Banking with No RAM, or Banking + (RAM or Advanced Banking)
     enum BankingMode{
         Simple,
         Advanced
@@ -28,17 +29,26 @@ private:
 
     BankingMode mode = Simple;
 
+    //Determined by cartridge header. Passed to MBC1 by Cartridge object that creates it
     uint8_t NumROMBanks;
     uint8_t NumRAMBanks;
+
+    //Must be true to read anything other than 0xFF from RAM
     bool RAMEnabled;
+
+    //See Macro above. Vectors of Arrays the size of a bank
     BankType Bank0; //Switchable if in large Cartridge mode
     BankType ROMBanks;
     BankType RAMBanks;
 
+    //Registers storing the values of the ROM/RAM Bank.
+
+    uint8_t ROMBankRegister;
+    uint8_t RAMBankRegister;
+
+    //Indices for the Bank vectors
     uint16_t curROMBankIndex;
-
     uint16_t curRAMBankIndex;
-
     uint16_t curBank0Index;
     uint16_t maxBank0Index;
 

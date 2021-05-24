@@ -90,6 +90,9 @@ void MBC1::Initialize() {
     curRAMBankIndex = 0;
     curROMBankIndex = 0;
     curBank0Index = 0;
+
+    ROMBankRegister = 0x00;
+    RAMBankRegister = 0x00;
 }
 
 void MBC1::SwitchROMBank(uint16_t number) {
@@ -99,12 +102,12 @@ void MBC1::SwitchROMBank(uint16_t number) {
         adjusted_num -= NumROMBanks;
     } //TODO Stop using the indices as registers. Create register variables and read/write to those
       //Before switching banks
-    curROMBankIndex = adjusted_num & 0x1F ^ (curBank0Index << 5); //Input is only 5 bits
+    curROMBankIndex = adjusted_num; //Input is only 5 bits
     //The below handles the fact that zero-first-nibble bank numbers always map to bank# + 1
-    if(adjusted_num & 0x1F == 0x00 ){ //If the lower five bits are zero, increment them and check the upper two bits
+    if((adjusted_num & 0x1F) == 0x00 ){ //If the lower five bits are zero, increment them and check the upper two bits
                                   //And the banking mode in SwitchBank0
         curROMBankIndex++;
-        SwitchBank0(adjusted_num & 0xF0); //Does nothing if Banking mode is Simple.
+        SwitchBank0(adjusted_num & 0x60); //Does nothing if Banking mode is Simple.
     }
 
 }
@@ -130,8 +133,11 @@ MBC1::MBC1(int ROMBankCount, int RAMBankCount) {
 
 void MBC1::WriteRAMBank(uint8_t value, uint16_t location) {
         //The RAM bank number can be switched even if RAM is off.
-        uint16_t index = location - RAMBankStart;
-        RAMBanks[curRAMBankIndex][index] = value;
+        if(RAMEnabled) {
+            uint16_t index = location - RAMBankStart;
+            uint16_t debug_index = curRAMBankIndex;
+            RAMBanks[debug_index][index] = value;
+        }
 }
 
 void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
@@ -149,19 +155,20 @@ void MBC1::WriteROMBank(uint8_t value, uint16_t location) {
 
     }else if(location < 0x4000){ //Cartridge Bank number
         if(NumROMBanks > 2){
-            SwitchROMBank((value & 0x1F));
+            ROMBankRegister = value & 0x1F;
+            //Change JUST the ROM Bank Register and then swap the whole value
+            SwitchROMBank((RAMBankRegister << 5) ^ ROMBankRegister);
         }
 
     }else if(location < 0x6000 && mode == Advanced){ //High Cartridge Bank Number/ RAM Bank Number
 
         if(NumROMBanks > 32) {
-            //Bank index is 5 bits, this region is the upper two bits.
-            //In case the index is higher than the masked value for whatever
-            //reason, we zero-mask the two most significant bits.
-            uint16_t index = ((value & 0x03) << 5) ^ (curROMBankIndex & 0x1F);
-            SwitchROMBank(index);
+            RAMBankRegister = value & 0x03;
+            //Change JUST the RAM Bank register and then swap the whole value.
+            SwitchROMBank((RAMBankRegister << 5) ^ ROMBankRegister);
         }
-        if(NumRAMBanks > 1){
+        else if(NumRAMBanks > 1){
+            RAMBankRegister = value & 0x03;
             SwitchRAMBank(value);
         }
 
@@ -203,11 +210,11 @@ MBC1::Region MBC1::GetRegion(uint16_t location) {
     }else if (location < 0x8000){
         return RegROMBank;
     }else if (location < 0xA000){
-        throw(std::runtime_error("Error: Video Memory Access from Cartridge Memory"));
+        throw(std::runtime_error("Error: Video Memory Access from Cartridge Memory -- " + std::to_string(location)));
     }else if (location < 0xC000){
         return RegRAMBank;
     }else{
-        throw(std::runtime_error("Error: Memory location requested from Cartridge is greater than cartridge region"));
+        throw(std::runtime_error("Error: Memory location requested from Cartridge is greater than cartridge region " + std::to_string(location)));
     }
 }
 
