@@ -11,7 +11,6 @@
 #include <vector>
 #include <array>
 #include <string>
-#define BankType std::vector<std::array<uint8_t, 0x4000>>
 
 class MBC1 : MemoryBankController{
 private:

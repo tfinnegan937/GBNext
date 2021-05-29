@@ -2,7 +2,7 @@
 // Created by plays on 5/21/2021.
 //
 
-#include "MBC1.h"
+#include "Memory/MBC/MBC1.h"
 #define RAMBankStart 0xA000
 #define ROMBankStart 0x4000
 #include <iostream>

@@ -5,11 +5,15 @@
 #ifndef GBNEXT_MEMORYBANKCONTROLLER_H
 #define GBNEXT_MEMORYBANKCONTROLLER_H
 #include "Memory/MemoryObject.h"
+#include <vector>
+#include <array>
+#include <string>
+#define BankType std::vector<std::array<uint8_t, 0x4000>>
 
 class MemoryBankController : MemoryObject{
 private:
 public:
-    enum BankType{
+    enum BankEnum{
     ROMOnly,
     MBC1,
     MBC1Ram,
