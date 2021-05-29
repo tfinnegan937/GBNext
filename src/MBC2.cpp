@@ -47,6 +47,9 @@ uint8_t MBC2::ReadAt(uint16_t location) {
 
 void MBC2::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
 
+    for(int i = start; i < end; i++){
+        WriteTo(value, i);
+    }
 }
 
 void MBC2::Initialize() {

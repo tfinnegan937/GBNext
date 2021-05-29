@@ -5,6 +5,7 @@
 #ifndef GBNEXT_MEMORYMAP_H
 #define GBNEXT_MEMORYMAP_H
 #include <memory>
+#include <fstream>
 #include "MemoryObject.h"
 #include "Cartridge.h"
 #include "VolatileMemory.h"
@@ -42,6 +43,7 @@ public:
 
     void Initialize() override;
 
+    void LoadRom(ifstream *file);
     MemoryMap();
 };
 

@@ -3,7 +3,7 @@
 //
 
 #include "../include/Memory/MemoryMap.h"
-
+#include <iostream>
 uint8_t MemoryMap::ReadAt(uint16_t location) {
     MemoryType type = GetMemoryObject(location);
     uint8_t readValue;
@@ -107,4 +107,26 @@ MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
 
 MemoryMap::MemoryMap() {
     mainMemory = std::make_shared<VolatileMemory>();
+}
+
+void MemoryMap::LoadRom(ifstream *file) {
+
+    //Check if file is open, otherwise error
+    if(!(file->is_open())){
+        throw(std::runtime_error("ROM file has not been opened."));
+    }
+
+    //Load file into byte array
+
+    file->seekg(0, ios::end); //Find size of file
+    auto fileSize = file->tellg(); //Save size of file
+    file->seekg(0, ios::beg); //Return position to start of file
+    auto fileArray = std::make_shared<uint8_t[]>(fileSize);
+    std::cout << fileSize << "\n";//Without this line, the program crashes
+    file->read((char*)fileArray.get(), fileSize);
+
+    for(int i = 0x104; i < 0x133; i++){
+        std::cout << std::hex << (int)fileArray[i] << std::endl;
+    }
+
 }
