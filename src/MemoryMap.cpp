@@ -122,7 +122,7 @@ void MemoryMap::LoadRom(ifstream *file) {
     auto fileSize = file->tellg(); //Save size of file
     file->seekg(0, ios::beg); //Return position to start of file
     auto fileArray = std::make_shared<uint8_t[]>(fileSize);
-    std::cout << fileSize << "\n";//Without this line, the program crashes
+    std::cout << "\n";//Without this line, the program crashes
     file->read((char*)fileArray.get(), fileSize);
 
     for(int i = 0x104; i < 0x133; i++){
