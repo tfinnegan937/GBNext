@@ -3,7 +3,7 @@
 //
 
 #include "../include/Memory/Cartridge.h"
-
+#include <string>
 uint8_t Cartridge::ReadAt(uint16_t location) {
     return 0;
 }
@@ -23,7 +23,12 @@ void Cartridge::Initialize() {
 template<const uint16_t val>
 void Cartridge::LoadROM(std::array<uint8_t, val> array) {
     //Mapped according to the table at https://gbdev.io/pandocs/The_Cartridge_Header.html
-    uint8_t cartType = array[0x147];
+    uint8_t cartType = 0x00;
+    if(val < 0x147){
+        throw (std::runtime_error("Byte Array too small to be complete cart."));
+    }
+    cartType = array[0x147];
+
     switch(cartType){
         case 0x00:
             bankType = MemoryBankController::ROMOnly;
