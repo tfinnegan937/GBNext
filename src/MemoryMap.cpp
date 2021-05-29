@@ -125,8 +125,65 @@ void MemoryMap::LoadRom(ifstream *file) {
     std::cout << "\n";//Without this line, the program crashes
     file->read((char*)fileArray.get(), fileSize);
 
-    for(int i = 0x104; i < 0x133; i++){
-        std::cout << std::hex << (int)fileArray[i] << std::endl;
+    //These bites are in every cartridge. Check against them to check if the file is a cartridge
+    uint8_t nintendoHeader[] = {
+            0xCE,
+            0xED,
+            0x66,
+            0x66,
+            0xCC,
+            0x0D,
+            0x00,
+            0x0B,
+            0x03,
+            0x73,
+            0x00,
+            0x83,
+            0x00,
+            0x0C,
+            0x00,
+            0x0D,
+            0x00,
+            0x08,
+            0x11,
+            0x1F,
+            0x88,
+            0x89,
+            0x00,
+            0x0E,
+            0xDC,
+            0xCC,
+            0x6E,
+            0xE6,
+            0xDD,
+            0xDD,
+            0xD9,
+            0x99,
+            0xBB,
+            0xBB,
+            0x67,
+            0x63,
+            0x6E,
+            0x0E,
+            0xEC,
+            0xCC,
+            0xDD,
+            0xDC,
+            0x99,
+            0x9F,
+            0xBB,
+            0xB9,
+            0x33,
+            0x3E
+    };
+
+    uint8_t headerBytes = 0x30;
+    uint16_t cartridgeHeaderOffset = 0x104;
+    for(int i = 0; i < headerBytes; i++){
+        if(fileArray[i + cartridgeHeaderOffset] != nintendoHeader[i]){
+            throw(std::runtime_error("Error: The file provided is not a valid GB or GBC cartridge"));
+        }
     }
 
+    //TODO pass byte array to Cartridge memory
 }
