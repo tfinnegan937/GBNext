@@ -123,9 +123,10 @@ void MemoryMap::LoadRom(ifstream *file) {
     file->seekg(0, ios::beg); //Return position to start of file
     auto fileArray = std::make_shared<uint8_t[]>(fileSize);
     std::cout << "\n";//Without this line, the program crashes
-    file->read((char*)fileArray.get(), fileSize);
+    file->read((char*)fileArray.get(), fileSize); //Copy the file into the new array
 
     //These bites are in every cartridge. Check against them to check if the file is a cartridge
+    //They represent the nintendo logo
     uint8_t nintendoHeader[] = {
             0xCE,
             0xED,
@@ -177,8 +178,8 @@ void MemoryMap::LoadRom(ifstream *file) {
             0x3E
     };
 
-    uint8_t headerBytes = 0x30;
-    uint16_t cartridgeHeaderOffset = 0x104;
+    uint8_t headerBytes = 0x30; //The number of bytes in the logo
+    uint16_t cartridgeHeaderOffset = 0x104; //The start point of the nintendo logo bytes in the cartridge
     for(int i = 0; i < headerBytes; i++){
         if(fileArray[i + cartridgeHeaderOffset] != nintendoHeader[i]){
             throw(std::runtime_error("Error: The file provided is not a valid GB or GBC cartridge"));
