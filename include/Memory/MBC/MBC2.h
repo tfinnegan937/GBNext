@@ -6,7 +6,7 @@
 #define GBNEXT_MBC2_H
 #include "MemoryBankController.h"
 
-class MBC2 : MemoryBankController{
+class MBC2 : public MemoryBankController{
 private:
     enum Region{
         Bank0, //First ROM region

@@ -9,6 +9,7 @@
 #include "MBC/MemoryBankController.h"
 #include "MBC/MBC1.h"
 #include "MBC/MBC2.h"
+#include "MBC/NoMBC.h"
 //Include the rest of the MBC files here.
 class Cartridge : MemoryObject{
     std::unique_ptr<MemoryBankController> controller;
@@ -19,6 +20,11 @@ class Cartridge : MemoryObject{
 
     uint8_t ROMSize;
     uint8_t RAMSize;
+
+    void SelectBankType(uint8_t descriptor); //Gets the bank type from the cartridge header value
+    void SelectROMSize(uint8_t descriptor); //Gets the ROM size from the cartridge header value
+    void SelectRAMSize(uint8_t descriptor); //Gets the RAM Size from the cartridge header value
+    void CreateControllerObject(); //Takes the ROM Size, RAM Size, and bank type and generates the MBC object
 public:
     uint8_t ReadAt(uint16_t location) override;
 
@@ -28,8 +34,7 @@ public:
 
     void Initialize() override;
 
-    template<const uint16_t val>
-    void LoadROM(std::array<uint8_t, val> array);
+    void LoadROM(uint8_t * arr, int val);
 };
 
 

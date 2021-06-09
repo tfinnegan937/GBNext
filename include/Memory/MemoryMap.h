@@ -29,7 +29,7 @@ private:
 
     //See the GetMemoryObject and ReadAt functions to see how these are mapped to the machine's actual memory map.
     shared_ptr<VolatileMemory> mainMemory;
-    shared_ptr<Cartridge> rom;
+    shared_ptr<Cartridge> cartridge;
     shared_ptr<IOPorts> ioPorts;
     //helper functions
     static MemoryType GetMemoryObject(uint16_t location);

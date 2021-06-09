@@ -58,12 +58,18 @@ void NoMBC::LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
     }
 
     for(int i = offset; i < 0x4000 + offset; i++){
-        ROM[i] = bank[i];
+        ROM[i] = bank[i - offset];
     }
 }
 
 void NoMBC::LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
     throw(std::runtime_error("RAM Banks not implemented on any official non-MBC cartridge"));
 }
+
+NoMBC::NoMBC(int NumROMBanks, int NumRAMBanks) {
+    //Ignore these values. Kept in place for consistency purposes
+}
+
+
 
 

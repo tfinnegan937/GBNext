@@ -11,7 +11,7 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
     //TODO Lock the map
     switch(type){
         case TypeCartridge:
-            //readValue = rom->ReadAt(location);
+            //readValue = cartridge->ReadAt(location);
             readValue = 0x0000;
             break;
         case TypeVideo:
@@ -48,7 +48,7 @@ void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
     //TODO Lock the map
     switch(type){
         case TypeCartridge:
-            rom->WriteTo(value, location);
+            cartridge->WriteTo(value, location);
             break;
         case TypeVideo:
             //TODO Return the read value
@@ -107,6 +107,7 @@ MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
 
 MemoryMap::MemoryMap() {
     mainMemory = std::make_shared<VolatileMemory>();
+    cartridge = std::make_shared<Cartridge>();
 }
 
 void MemoryMap::LoadRom(ifstream *file) {
@@ -187,4 +188,7 @@ void MemoryMap::LoadRom(ifstream *file) {
     }
 
     //TODO pass byte array to Cartridge memory
+    cartridge->Initialize();
+    cartridge->LoadROM(fileArray.get(), fileSize);
+    file->close();
 }

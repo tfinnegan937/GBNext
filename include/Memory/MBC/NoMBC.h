@@ -7,7 +7,7 @@
 
 #include "MemoryBankController.h"
 
-class NoMBC : MemoryBankController{
+class NoMBC : public MemoryBankController{
     std::array<uint8_t, 0x8000> ROM;
 private:
     void WriteTo(uint8_t value, uint16_t location) override;
@@ -19,7 +19,10 @@ private:
     void SwitchRAMBank(uint16_t number) override;
 
    void LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
-    void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
+   void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
+
+public:
+   NoMBC(int NumROMBanks, int NumRAMBanks);
 };
 
 

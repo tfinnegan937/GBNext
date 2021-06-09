@@ -12,7 +12,7 @@
 #include <array>
 #include <string>
 
-class MBC1 : MemoryBankController{
+class MBC1 : public MemoryBankController{
 private:
     //Given a memory region, what part of the cartridge is it stored in?
     enum Region{

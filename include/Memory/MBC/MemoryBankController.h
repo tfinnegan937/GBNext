@@ -10,7 +10,7 @@
 #include <string>
 #define BankType std::vector<std::array<uint8_t, 0x4000>>
 
-class MemoryBankController : MemoryObject{
+class MemoryBankController : public MemoryObject{
 private:
 public:
     enum BankEnum{
