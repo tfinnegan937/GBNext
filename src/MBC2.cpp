@@ -64,7 +64,7 @@ void MBC2::Initialize() {
 }
 
 void MBC2::SwitchBank0(uint16_t number) {
-throw(std::runtime_error("Bank0 switch attempted on MBC2. Not supported"));
+    throw(std::runtime_error("Bank0 switch attempted on MBC2. Not supported"));
 }
 
 void MBC2::SwitchROMBank(uint16_t number) {
@@ -120,5 +120,24 @@ void MBC2::HandleRegisterWrite(uint8_t value, uint16_t location) {
                 RAMEnabled = false;
                 break;
         }
+    }
+}
+
+void MBC2::LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
+    ROMBanks[index] = bank;
+}
+
+void MBC2::LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
+    auto temp = bank;
+    for(int i = 0; i < 512; i++){ //On-Board RAM contains 512 nibbles
+        temp[i] = bank[i] & 0x0F; //Remove leading four bits
+    }
+
+    if(index > 0){
+        throw(std::runtime_error("Error: MBC2 only has a single RAM bank of 512 nibbles"));
+    }
+
+    for(int i = 0; i < 512; i++){
+        RAM[i] = temp[i];
     }
 }

@@ -31,6 +31,9 @@ public:
     void SwitchROMBank(uint16_t number) override;
     void SwitchRAMBank(uint16_t number) override;
     MBC2(int NumROMBanks);
+
+    void LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
+    void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
 };
 
 

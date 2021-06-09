@@ -35,15 +35,35 @@ void NoMBC::SwitchBank0(uint16_t number) {
 }
 
 void NoMBC::SwitchROMBank(uint16_t number) {
-    throw(std::runtime_error("Error: ROM banks not present on cart without a Bank Controller"));
+    throw(std::runtime_error("Error: ROM banks not present on a cart without a Bank Controller"));
 }
 
 void NoMBC::SwitchRAMBank(uint16_t number) {
-    throw(std::runtime_error("Error: RAM banks not present on cart without a bank controller"));
+    throw(std::runtime_error("Error: RAM banks not present on a cart without a bank controller"));
 }
 
-void NoMBC::LoadROM(std::array<uint8_t, 0x8000> byteArray) {
-    for(int i = 0; i < 0x8000; i++){
-        ROM[i] = byteArray[i];
+void NoMBC::LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
+    uint16_t offset = 0x0000;
+    switch(index){
+        case 0:
+            offset = 0x0000;
+            break;
+        case 1:
+            offset = 0x4000;
+            break;
+        default:
+            throw(std::runtime_error("This cartridge does not have ROM banks. This emulator abstracts\n"
+                                     "the contiguous ROM as Bank 0 at offset 0, and Bank 1 at offset 0x4000\n"
+                                     "while loading ROM file.\n"));
+    }
+
+    for(int i = offset; i < 0x4000 + offset; i++){
+        ROM[i] = bank[i];
     }
 }
+
+void NoMBC::LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) {
+    throw(std::runtime_error("RAM Banks not implemented on any official non-MBC cartridge"));
+}
+
+

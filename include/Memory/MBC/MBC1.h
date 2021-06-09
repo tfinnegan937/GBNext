@@ -66,8 +66,8 @@ public:
     void SwitchRAMBank(uint16_t number) override;
     MBC1(int ROMBankCount, int RAMBankCount);
 
-    void LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank);
-    void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank);
+    void LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
+    void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) override;
 
     std::string GetDebugInformation();
 };
