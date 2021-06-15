@@ -11,27 +11,24 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
     //TODO Lock the map
     switch(type){
         case TypeCartridge:
-            //readValue = cartridge->ReadAt(location);
-            readValue = 0x0000;
+            readValue = cartridge->ReadAt(location);
             break;
         case TypeVideo:
-            //TODO Return the read value
-            readValue = 0x0000;
+            readValue = vRAM->ReadAt(location);
             break;
         case TypeEmpty:
-            readValue = 0x0000;
+            readValue = 0xFF;
             break;
         case TypeInterrupt:
             //TODO Return interrupt register
-            readValue = 0x0000;
+            readValue = 0xFF;
             break;
         case TypeSprite:
             //TODO Return value of sprite memory location
-            readValue = 0x0000;
+            readValue = 0xFF;
             break;
         case TypeIO:
-            //readValue = ioPorts->ReadAt(location);
-            readValue = 0x0000;
+            readValue = ioPorts->ReadAt(location);
             break;
         case TypeVolatile:
             readValue = mainMemory->ReadAt(location);
@@ -51,7 +48,7 @@ void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
             cartridge->WriteTo(value, location);
             break;
         case TypeVideo:
-            //TODO Return the read value
+            vRAM->WriteTo(value, location);
             break;
         case TypeEmpty:
             //Do nothing
@@ -79,6 +76,9 @@ void MemoryMap::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
 
 void MemoryMap::Initialize() {
     mainMemory->Initialize();
+    vRAM->Initialize();
+
+    //Note: Cartridge isnt initialized until ROM has been loaded.
 }
 
 MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
@@ -108,6 +108,7 @@ MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
 MemoryMap::MemoryMap() {
     mainMemory = std::make_shared<VolatileMemory>();
     cartridge = std::make_shared<Cartridge>();
+    vRAM = std::make_shared<VideoRAM>();
 }
 
 void MemoryMap::LoadRom(ifstream *file) {
@@ -122,9 +123,12 @@ void MemoryMap::LoadRom(ifstream *file) {
     file->seekg(0, ios::end); //Find size of file
     auto fileSize = file->tellg(); //Save size of file
     file->seekg(0, ios::beg); //Return position to start of file
-    auto fileArray = std::make_shared<uint8_t[]>(fileSize);
-    std::cout << "\n";//Without this line, the program crashes
-    file->read((char*)fileArray.get(), fileSize); //Copy the file into the new array
+    cout << fileSize << endl;
+    auto fileArray = new uint8_t[fileSize];
+
+    file->read((char*)fileArray, fileSize); //Copy the file into the new array
+
+
 
     //These bites are in every cartridge. Check against them to check if the file is a cartridge
     //They represent the nintendo logo
@@ -187,8 +191,7 @@ void MemoryMap::LoadRom(ifstream *file) {
         }
     }
 
-    //TODO pass byte array to Cartridge memory
     cartridge->Initialize();
-    cartridge->LoadROM(fileArray.get(), fileSize);
+    cartridge->LoadROM(fileArray, fileSize);
     file->close();
 }

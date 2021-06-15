@@ -3,7 +3,8 @@
 //
 
 #include "Memory/MBC/NoMBC.h"
-
+#include <iostream>
+using namespace std;
 void NoMBC::WriteTo(uint8_t value, uint16_t location) {
     if(location > 0x7FFF){
         throw(std::runtime_error("Error: Non-ROM region written to through ROM"));
@@ -11,11 +12,11 @@ void NoMBC::WriteTo(uint8_t value, uint16_t location) {
 }
 
 uint8_t NoMBC::ReadAt(uint16_t location) {
-    if(location < 0x7FFF){
+    if(location < 0x8000){
         return ROM[location];
-    }else if(location < 0x9FFF){
+    }else if(location < 0xA000){
         throw(std::runtime_error("Error: Attempt to read from VRAM from ROM"));
-    }else if(location < 0xBFFF){
+    }else if(location < 0xC000){
         return 0xFF; //No RAM available.
     }else{
         throw(std::runtime_error("Error: Non-ROM region read from through ROM"));

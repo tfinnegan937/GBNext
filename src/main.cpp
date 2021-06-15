@@ -2,6 +2,7 @@
 #include "Memory/MBC/MBC1.h"
 #include "Memory/MemoryMap.h"
 #include <fstream>
+using namespace std;
 int main() {
     MemoryMap map;
     map.Initialize();
@@ -15,5 +16,6 @@ int main() {
     }
 
     map.LoadRom(&file);
+
     return 0;
 }

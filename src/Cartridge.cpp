@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <cmath>
+#include <iostream>
 uint8_t Cartridge::ReadAt(uint16_t location) {
     return controller->ReadAt(location);
 }
@@ -26,6 +27,7 @@ void Cartridge::Initialize() {
 void Cartridge::LoadROM(uint8_t * arr, int val) {
     //Mapped according to the table at https://gbdev.io/pandocs/The_Cartridge_Header.html
     uint8_t cartType = 0x00;
+
     if(val < 0x8000){
         throw (std::runtime_error("Byte Array too small to be complete cart."));
     }
@@ -54,7 +56,7 @@ void Cartridge::LoadROM(uint8_t * arr, int val) {
     for(int offset = 0x0000; offset < (0x4000 * ROMSize); offset+= 0x4000){ //Get each bank
         std::array<uint8_t, 0x4000> bank{};
         for(int memLoc = offset; memLoc < (offset + 0x4000); memLoc++){ //Load memory from specific bank into object
-            bank[memLoc - offset] = arr[offset]; //Store the element of the array into a bank object
+            bank[memLoc - offset] = arr[offset + memLoc]; //Store the element of the array into a bank object
         }
         controller->LoadROMBank(offset / 0x4000, bank); //Store the bank at the appropriate index
     }

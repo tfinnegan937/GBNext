@@ -9,6 +9,7 @@
 #include "MemoryObject.h"
 #include "Cartridge.h"
 #include "VolatileMemory.h"
+#include "VideoRAM.h"
 #include "IOPorts.h"
 
 using namespace std;
@@ -31,6 +32,7 @@ private:
     shared_ptr<VolatileMemory> mainMemory;
     shared_ptr<Cartridge> cartridge;
     shared_ptr<IOPorts> ioPorts;
+    shared_ptr<VideoRAM> vRAM;
     //helper functions
     static MemoryType GetMemoryObject(uint16_t location);
 
