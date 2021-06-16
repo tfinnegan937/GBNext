@@ -6,6 +6,7 @@
 #define GBNEXT_MEMORYMAP_H
 #include <memory>
 #include <fstream>
+#include <chrono>
 #include "MemoryObject.h"
 #include "Cartridge.h"
 #include "VolatileMemory.h"
@@ -13,7 +14,7 @@
 #include "IOPorts.h"
 #include "ObjectAttributeMemory.h"
 using namespace std;
-
+using namespace chrono;
 
 class MemoryMap : MemoryObject{
 private:
@@ -46,8 +47,13 @@ public:
 
     void Initialize() override;
 
-    void LoadRom(ifstream *file);
+    void LoadROM(ifstream *file);
+
+    void Tick(microseconds deltaTime);
+
     MemoryMap();
+
+
 };
 
 

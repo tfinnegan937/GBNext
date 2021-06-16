@@ -4,11 +4,47 @@
 
 #ifndef GBNEXT_GBNEXT_H
 #define GBNEXT_GBNEXT_H
-
+#include "Memory/MemoryMap.h"
+#include <memory>
+#include <chrono>
+#include <fstream>
+#include <iostream>
+using namespace std;
+using namespace chrono;
 
 class GBNext {
-private:
 public:
+    enum EmulatorState{
+        NoROM,
+        ROMLoaded,
+        Halted,
+        Running,
+        Paused,
+    };
+private:
+    //State Variables
+    EmulatorState state;
+    //FilePaths
+    ifstream currentROM;
+
+    //Hardware Components
+    shared_ptr<MemoryMap> memory;
+
+    //Timer ticks
+    microseconds deltaTimeM; //Time since start of last machine cycle
+    microseconds deltaTime; //Time since start of frame
+    microseconds time; //Accumulated time since Run was called in milliseconds
+
+    //Helper Functions
+    static microseconds getUnixTimeMicroseconds() ;
+    //Tick Functions
+    void cpuTick(int &cycles); //One full instruction execution
+    void Tick(); //One full frame
+public:
+    GBNext();
+    bool LoadROM(const string& romPath);
+    void Run();
+
 };
 
 

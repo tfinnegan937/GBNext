@@ -25,7 +25,7 @@ uint8_t MemoryMap::ReadAt(uint16_t location, bool ppuMode2) {
             break;
         case TypeSprite:
             //TODO Return value of sprite memory location
-            readValue = OAM->ReadAt(location, false);
+            readValue = OAM->ReadAt(location, ppuMode2);
             break;
         case TypeIO:
             readValue = ioPorts->ReadAt(location, false);
@@ -60,7 +60,7 @@ void MemoryMap::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
             OAM->WriteTo(value, location, ppuMode2);
             break;
         case TypeIO:
-            ioPorts->WriteTo(value, location, false);
+            ioPorts->WriteTo(value, location, false); //TODO Implement I/O ports
             break;
         case TypeVolatile:
             mainMemory->WriteTo(value, location, false);
@@ -112,7 +112,7 @@ MemoryMap::MemoryMap() {
     OAM = std::make_shared<ObjectAttributeMemory>();
 }
 
-void MemoryMap::LoadRom(ifstream *file) {
+void MemoryMap::LoadROM(ifstream *file) {
 
     //Check if file is open, otherwise error
     if(!(file->is_open())){
@@ -194,5 +194,8 @@ void MemoryMap::LoadRom(ifstream *file) {
 
     cartridge->Initialize();
     cartridge->LoadROM(fileArray, fileSize);
-    file->close();
+}
+
+void MemoryMap::Tick(microseconds deltaTime) {
+
 }

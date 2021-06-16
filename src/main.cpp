@@ -1,21 +1,11 @@
 #include <iostream>
-#include "Memory/MBC/MBC1.h"
-#include "Memory/MemoryMap.h"
+#include "GBNext.h"
+#include <chrono>
 #include <fstream>
 using namespace std;
 int main() {
-    MemoryMap map;
-    map.Initialize();
-
-    ifstream file;
-
-    try {
-        file.open("/mnt/c/Users/plays/CLionProjects/GBNext/tetris.gb", ios::binary);
-    }catch(std::exception & e){
-        std::cout << e.what();
-    }
-
-    map.LoadRom(&file);
-
+    GBNext app;
+    cout << app.LoadROM("/mnt/c/Users/plays/CLionProjects/GBNext/tetris.gb") << endl;
+    app.Run();
     return 0;
 }
