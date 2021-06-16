@@ -42,7 +42,7 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
 void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
     MemoryType type = GetMemoryObject(location);
 
-    //TODO Lock the map
+    //TODO Mutex Lock the map
     switch(type){
         case TypeCartridge:
             cartridge->WriteTo(value, location);
