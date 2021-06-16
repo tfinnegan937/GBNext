@@ -20,9 +20,9 @@ private:
      OAMRow GetRow(uint16_t location);
      OAMRow GetPreviousRow(uint16_t location);
 public:
-    uint8_t ReadAt(uint16_t location) override;
+    uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) override;
 
-    void WriteTo(uint8_t value, uint16_t location) override;
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2 = false) override;
 
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override;
 

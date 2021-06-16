@@ -8,8 +8,8 @@
 #include <cstdint>
 class MemoryObject {
 public:
-    virtual uint8_t ReadAt(uint16_t location) = 0;
-    virtual void WriteTo(uint8_t value, uint16_t location) = 0;
+    virtual uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) = 0;
+    virtual void WriteTo(uint8_t value, uint16_t location, bool ppuMode2) = 0;
     virtual void WriteRange(uint8_t value, uint16_t start, uint16_t end) = 0;
     virtual void Initialize() = 0;
 };

@@ -4,17 +4,17 @@
 
 #include "../include/Memory/MemoryMap.h"
 #include <iostream>
-uint8_t MemoryMap::ReadAt(uint16_t location) {
+uint8_t MemoryMap::ReadAt(uint16_t location, bool ppuMode2) {
     MemoryType type = GetMemoryObject(location);
     uint8_t readValue;
 
     //TODO Lock the map
     switch(type){
         case TypeCartridge:
-            readValue = cartridge->ReadAt(location);
+            readValue = cartridge->ReadAt(location, false);
             break;
         case TypeVideo:
-            readValue = vRAM->ReadAt(location);
+            readValue = vRAM->ReadAt(location, false);
             break;
         case TypeEmpty:
             readValue = 0xFF;
@@ -25,13 +25,13 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
             break;
         case TypeSprite:
             //TODO Return value of sprite memory location
-            readValue = 0xFF;
+            readValue = OAM->ReadAt(location, false);
             break;
         case TypeIO:
-            readValue = ioPorts->ReadAt(location);
+            readValue = ioPorts->ReadAt(location, false);
             break;
         case TypeVolatile:
-            readValue = mainMemory->ReadAt(location);
+            readValue = mainMemory->ReadAt(location, false);
             break;
     }
 
@@ -39,16 +39,16 @@ uint8_t MemoryMap::ReadAt(uint16_t location) {
     return readValue;
 }
 
-void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
+void MemoryMap::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
     MemoryType type = GetMemoryObject(location);
 
     //TODO Mutex Lock the map
     switch(type){
         case TypeCartridge:
-            cartridge->WriteTo(value, location);
+            cartridge->WriteTo(value, location, false);
             break;
         case TypeVideo:
-            vRAM->WriteTo(value, location);
+            vRAM->WriteTo(value, location, false);
             break;
         case TypeEmpty:
             //Do nothing
@@ -57,20 +57,20 @@ void MemoryMap::WriteTo(uint8_t value, uint16_t location) {
             //TODO Return interrupt register
             break;
         case TypeSprite:
-            //TODO Return value of sprite memory location
+            OAM->WriteTo(value, location, ppuMode2);
             break;
         case TypeIO:
-            ioPorts->WriteTo(value, location);
+            ioPorts->WriteTo(value, location, false);
             break;
         case TypeVolatile:
-            mainMemory->WriteTo(value, location);
+            mainMemory->WriteTo(value, location, false);
             break;
     }
 }
 //Used for zeroing out spaces of memory
 void MemoryMap::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
     for(int i = start; i < end; i++){
-        WriteTo(value, i);
+        WriteTo(value, i, false);
     }
 }
 
@@ -97,7 +97,7 @@ MemoryMap::MemoryType MemoryMap::GetMemoryObject(uint16_t location) {
     }else if(location < 0xFF4C){
         return TypeIO; //Serial IO ports
     }else if (location < 0xFF80){
-        return TypeEmpty; //Empty and unusable
+        return TypeEmpty; //TODO Handle prohibited area write behavior
     }else if (location < 0xFFFF){
         return TypeVolatile; //Additional Internal RAM
     }else{
@@ -109,6 +109,7 @@ MemoryMap::MemoryMap() {
     mainMemory = std::make_shared<VolatileMemory>();
     cartridge = std::make_shared<Cartridge>();
     vRAM = std::make_shared<VideoRAM>();
+    OAM = std::make_shared<ObjectAttributeMemory>();
 }
 
 void MemoryMap::LoadRom(ifstream *file) {

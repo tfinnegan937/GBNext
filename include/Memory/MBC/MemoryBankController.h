@@ -32,9 +32,9 @@ public:
     virtual void SwitchRAMBank(uint16_t number) = 0;
 
     void Initialize() override {};
-    void WriteTo(uint8_t value, uint16_t location) override {};
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2) override {};
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override{};
-    uint8_t ReadAt(uint16_t location) override{return 0xFF;};
+    uint8_t ReadAt(uint16_t location, bool ppuMode2) override{return 0xFF;};
     virtual void LoadROMBank(uint16_t index, std::array<uint8_t, 0x4000> bank) = 0;
     virtual void LoadRAMBank(uint16_t index, std::array<uint8_t, 0x4000> bank)  = 0;
 };

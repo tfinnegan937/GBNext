@@ -26,9 +26,9 @@ class Cartridge : MemoryObject{
     void SelectRAMSize(uint8_t descriptor); //Gets the RAM Size from the cartridge header value
     void CreateControllerObject(); //Takes the ROM Size, RAM Size, and bank type and generates the MBC object
 public:
-    uint8_t ReadAt(uint16_t location) override;
+    uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) override;
 
-    void WriteTo(uint8_t value, uint16_t location) override;
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2 = false) override;
 
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override;
 

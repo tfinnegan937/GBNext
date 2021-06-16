@@ -4,11 +4,11 @@
 
 #include "Memory/IOPorts.h"
 
-uint8_t IOPorts::ReadAt(uint16_t location) {
+uint8_t IOPorts::ReadAt(uint16_t location, bool ppuMode2) {
     return 0;
 }
 
-void IOPorts::WriteTo(uint8_t value, uint16_t location) {
+void IOPorts::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
 
 }
 

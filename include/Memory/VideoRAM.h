@@ -13,9 +13,9 @@ class VideoRAM : public MemoryObject{
 private:
     array<uint8_t, 0x2000> VRAM;
 public:
-    uint8_t ReadAt(uint16_t location) override;
+    uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) override;
 
-    void WriteTo(uint8_t value, uint16_t location) override;
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2 = false) override;
 
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override;
 

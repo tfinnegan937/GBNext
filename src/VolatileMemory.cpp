@@ -16,7 +16,7 @@
 #define HIGHRAMEND 0xFFFE
 
 #include <stdexcept>
-uint8_t VolatileMemory::ReadAt(uint16_t location) {
+uint8_t VolatileMemory::ReadAt(uint16_t location, bool ppuMode2) {
 
     uint16_t index = GetMemoryIndex(location);
 
@@ -24,7 +24,7 @@ uint8_t VolatileMemory::ReadAt(uint16_t location) {
     return volMem[index];
 }
 
-void VolatileMemory::WriteTo(uint8_t value, uint16_t location) {
+void VolatileMemory::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
     uint16_t index = GetMemoryIndex(location);
 
     volMem[index] = value;
@@ -32,7 +32,7 @@ void VolatileMemory::WriteTo(uint8_t value, uint16_t location) {
 
 void VolatileMemory::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
     for(int i = start; i < end; i++){
-        WriteTo(value, i);
+        WriteTo(value, i, false);
     }
 }
 

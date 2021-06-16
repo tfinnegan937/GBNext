@@ -7,12 +7,12 @@
 #include <string>
 #include <cmath>
 #include <iostream>
-uint8_t Cartridge::ReadAt(uint16_t location) {
-    return controller->ReadAt(location);
+uint8_t Cartridge::ReadAt(uint16_t location, bool ppuMode2) {
+    return controller->ReadAt(location, false);
 }
 
-void Cartridge::WriteTo(uint8_t value, uint16_t location) {
-    controller->WriteTo(value, location);
+void Cartridge::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
+    controller->WriteTo(value, location, false);
 }
 
 void Cartridge::WriteRange(uint8_t value, uint16_t start, uint16_t end) {

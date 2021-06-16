@@ -5,14 +5,14 @@
 #include <cstdint>
 #include "Memory/VideoRAM.h"
 
-uint8_t VideoRAM::ReadAt(uint16_t location) {
+uint8_t VideoRAM::ReadAt(uint16_t location, bool ppuMode2) {
     if(location < 0x8000 || location > 0x9FFF){
         throw(runtime_error("Error: VRAM object received read call outside of its range"));
     }
     return VRAM[location - 0x8000];
 }
 
-void VideoRAM::WriteTo(uint8_t value, uint16_t location) {
+void VideoRAM::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
     if(location < 0x8000 || location > 0x9FFF){
         throw(runtime_error("Error: VRAM object received read call outside of its range"));
     }

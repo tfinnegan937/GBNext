@@ -10,8 +10,8 @@
 class NoMBC : public MemoryBankController{
     std::array<uint8_t, 0x8000> ROM;
 private:
-    void WriteTo(uint8_t value, uint16_t location) override;
-    uint8_t ReadAt(uint16_t location) override;
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2 = false) override;
+    uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) override;
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override;
     void Initialize() override;
     void SwitchBank0(uint16_t number);

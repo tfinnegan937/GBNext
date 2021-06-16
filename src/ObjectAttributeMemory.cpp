@@ -4,20 +4,29 @@
 
 #include "Memory/ObjectAttributeMemory.h"
 
-uint8_t ObjectAttributeMemory::ReadAt(uint16_t location) {
-    return 0;
+uint8_t ObjectAttributeMemory::ReadAt(uint16_t location, bool ppuMode2) {
+    if(ppuMode2){
+        return ReadRAMBug(location);
+    }
+    return OAM[location - 0xFE00];
 }
 
-void ObjectAttributeMemory::WriteTo(uint8_t value, uint16_t location) {
-
+void ObjectAttributeMemory::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
+    if(ppuMode2){
+        WriteRAMBug(value, location);
+        return;
+    }
+    OAM[location - 0xFE00] = value;
 }
 
 void ObjectAttributeMemory::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
-
+    for(int i = start; i < end; i++){
+        WriteTo(value, i);
+    }
 }
 
 void ObjectAttributeMemory::Initialize() {
-
+    OAM.fill(0x00);
 }
 
 ObjectAttributeMemory::OAMRow ObjectAttributeMemory::GetRow(uint16_t location) {
@@ -33,7 +42,7 @@ ObjectAttributeMemory::OAMRow ObjectAttributeMemory::GetRow(uint16_t location) {
         wordStartLoc--;
     }
 
-    uint8_t rowPosition = (wordStartLoc - 0xFFA0) / 2; //Each word takes two bytes. This will give the index of the word in the row
+    uint8_t rowPosition = (wordStartLoc - 0xFE00) / 2; //Each word takes two bytes. This will give the index of the word in the row
 
     curRow.rowAddress = location - (2 * rowPosition); //Take the location address and subtract the number of bytes required to get to row index 0.
 

@@ -36,9 +36,9 @@ private:
     std::array<uint8_t, VOLMEM_SIZE> volMem;
     static uint16_t GetMemoryIndex(uint16_t location);
 public:
-    uint8_t ReadAt(uint16_t location) override;
+    uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) override;
 
-    void WriteTo(uint8_t value, uint16_t location) override; //Be careful with this function. If you
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2 = false) override; //Be careful with this function. If you
                                                              //Try to write from LOWRAM to HIGHRAM
                                                              //It will throw an error as it will
                                                              //try to write to the memory locations in between the

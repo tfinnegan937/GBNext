@@ -4,7 +4,7 @@
 
 #include "Memory/MBC/MBC2.h"
 
-void MBC2::WriteTo(uint8_t value, uint16_t location) {
+void MBC2::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
     if(location < 0x4000){
         HandleRegisterWrite(value, location);
     }else if (location < 0x8000){
@@ -20,7 +20,7 @@ void MBC2::WriteTo(uint8_t value, uint16_t location) {
     }
 }
 
-uint8_t MBC2::ReadAt(uint16_t location) {
+uint8_t MBC2::ReadAt(uint16_t location, bool ppuMode2) {
     Region region = GetRegion(location);
     switch(region){
         case Bank0:
@@ -48,7 +48,7 @@ uint8_t MBC2::ReadAt(uint16_t location) {
 void MBC2::WriteRange(uint8_t value, uint16_t start, uint16_t end) {
 
     for(int i = start; i < end; i++){
-        WriteTo(value, i);
+        WriteTo(value, i, false);
     }
 }
 

@@ -5,13 +5,13 @@
 #include "Memory/MBC/NoMBC.h"
 #include <iostream>
 using namespace std;
-void NoMBC::WriteTo(uint8_t value, uint16_t location) {
+void NoMBC::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
     if(location > 0x7FFF){
         throw(std::runtime_error("Error: Non-ROM region written to through ROM"));
     }
 }
 
-uint8_t NoMBC::ReadAt(uint16_t location) {
+uint8_t NoMBC::ReadAt(uint16_t location, bool ppuMode2) {
     if(location < 0x8000){
         return ROM[location];
     }else if(location < 0xA000){

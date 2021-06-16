@@ -11,7 +11,7 @@
 #include "VolatileMemory.h"
 #include "VideoRAM.h"
 #include "IOPorts.h"
-
+#include "ObjectAttributeMemory.h"
 using namespace std;
 
 
@@ -33,13 +33,14 @@ private:
     shared_ptr<Cartridge> cartridge;
     shared_ptr<IOPorts> ioPorts;
     shared_ptr<VideoRAM> vRAM;
+    shared_ptr<ObjectAttributeMemory> OAM;
     //helper functions
     static MemoryType GetMemoryObject(uint16_t location);
 
 public:
-    uint8_t ReadAt(uint16_t location) override;
+    uint8_t ReadAt(uint16_t location, bool ppuMode2 = false) override;
 
-    void WriteTo(uint8_t value, uint16_t location) override;
+    void WriteTo(uint8_t value, uint16_t location, bool ppuMode2 = false) override;
 
     void WriteRange(uint8_t value, uint16_t start, uint16_t end) override;
 
