@@ -11,6 +11,7 @@ using namespace std;
 class ObjectAttributeMemory : public MemoryObject{
 private:
      typedef struct OAMRow{
+         uint16_t rowNumber;
          uint16_t rowAddress;
          uint16_t words[4];
      } OAMRow;
