@@ -67,13 +67,13 @@ void ObjectAttributeMemory::WriteRAMBug(uint8_t value, uint16_t location) {
         uint16_t b = previousRow.words[0];
         uint16_t c = previousRow.words[2];
 
-        selectedRow.words[0] = ((a ^ c) & (b ^ c)) ^ c;
+        selectedRow.words[0] = ((a ^ c) & (b ^ c)) ^ c; //This equation dictates the first word corruption
 
         for (int i = 2; i < 4; i++) {
             selectedRow.words[i] = previousRow.words[i];
         }
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) { //Words 1 - 3 are copied from the previous row
             if (i % 2 == 0) {
                 OAM[selectedRow.rowAddress + i] =
                         (selectedRow.words[i / 2] & 0xFF00) >> 8; //Get the first byte of that word
@@ -97,9 +97,9 @@ uint8_t ObjectAttributeMemory::ReadRAMBug(uint16_t location) {
         uint16_t b = previousRow.words[0];
         uint16_t c = previousRow.words[2];
 
-        selectedRow.words[0] = b | (a & c);
+        selectedRow.words[0] = b | (a & c); //This is the equation for read corruption on the first word
 
-        for (int i = 2; i < 4; i++) {
+        for (int i = 2; i < 4; i++) { //Words 1 - 3 are copied from the previous row
             selectedRow.words[i] = previousRow.words[i];
         }
 
