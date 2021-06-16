@@ -68,7 +68,7 @@ void ObjectAttributeMemory::WriteRAMBug(uint8_t value, uint16_t location) {
         uint16_t c = previousRow.words[2];
 
         selectedRow.words[0] = ((a ^ c) & (b ^ c)) ^ c; //This equation dictates the first word corruption
-
+                                                        //Variables defined based on information at https://gbdev.gg8.se/wiki/articles/Sprite_RAM_Bug
         for (int i = 2; i < 4; i++) {
             selectedRow.words[i] = previousRow.words[i];
         }
@@ -98,7 +98,7 @@ uint8_t ObjectAttributeMemory::ReadRAMBug(uint16_t location) {
         uint16_t c = previousRow.words[2];
 
         selectedRow.words[0] = b | (a & c); //This is the equation for read corruption on the first word
-
+                                            //Variables defined based on information at https://gbdev.gg8.se/wiki/articles/Sprite_RAM_Bug
         for (int i = 2; i < 4; i++) { //Words 1 - 3 are copied from the previous row
             selectedRow.words[i] = previousRow.words[i];
         }
