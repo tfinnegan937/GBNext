@@ -7,8 +7,14 @@
 
 
 #include <cstdint>
-
+#include <iostream>
+using namespace std;
 class RegisterUnion {
+private:
+    uint16_t getHighByte(uint16_t input) const;
+    uint16_t getLowByte(uint16_t input) const;
+    uint16_t getHighByte(RegisterUnion input) const;
+    uint16_t getLowByte(RegisterUnion input) const;
 public:
     uint8_t * high;
     uint8_t * low;
@@ -32,13 +38,11 @@ public:
     uint16_t operator^(const RegisterUnion & input);
     uint16_t operator^(const uint8_t& input);
 
-    uint16_t operator<<(const uint16_t& input);
-    uint16_t operator<<(const RegisterUnion & input);
-    uint16_t operator<<(const uint8_t& input);
+    ostream& operator<<(ostream& os);
 
-    uint16_t operator>>(const uint16_t& input);
-    uint16_t operator>>(const RegisterUnion & input);
-    uint16_t operator>>(const uint8_t& input);
+
+    istream& operator>>(istream& is);
+
 
     uint16_t operator+(const uint16_t& input);
     uint16_t operator+(const RegisterUnion & input);
@@ -52,8 +56,8 @@ public:
     uint16_t operator%(const RegisterUnion & input);
     uint16_t operator%(const uint8_t& input);
 
-    uint16_t operator++();
-    uint16_t operator--();
+    uint16_t operator++(int);
+    uint16_t operator--(int);
 
     uint16_t get() const;
 
