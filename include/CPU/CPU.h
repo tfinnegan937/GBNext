@@ -15,7 +15,7 @@ using namespace std;
 
 class CPU {
 private:
-    uint16_t SP = 0xFFFF;
+    uint16_t SP = 0x0000;
     uint16_t PC = 0x0000;
 
     uint8_t A;
@@ -40,7 +40,8 @@ private:
 
     shared_ptr<MemoryMap> memory;
 public:
-    CPU(shared_ptr<MemoryMap> memoryMap);
+    explicit CPU(shared_ptr<MemoryMap> memoryMap);
+    void Execute(int & cycles);
 };
 
 

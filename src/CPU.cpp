@@ -16,3 +16,7 @@ CPU::CPU(shared_ptr<MemoryMap> memoryMap) {
     H = 0x00;
     L = 0x00;
 }
+
+void CPU::Execute(int & cycles) {
+    cycles--; //TODO PLACEHOLDER TO PREVENT HALT! Delete once instructions are implemented
+}

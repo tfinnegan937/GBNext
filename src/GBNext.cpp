@@ -22,10 +22,11 @@ void GBNext::cpuTick(int &cycles) {
     //Tick CPU
     //NOTE: The CPU decrements the number of cycles
     //as each instruction uses more than one cycle
+    cpu->Execute(cycles);
+
     microseconds cycleEnd = getUnixTimeMicroseconds();
 
     deltaTimeM = cycleEnd - cycleStart;
-    cycles--; //TODO placeholder. DELETE THIS
 }
 
 void GBNext::Tick() {
@@ -35,6 +36,7 @@ void GBNext::Tick() {
 
     while(cycles > 0){ //Execute until approximately this many cycles are completed (This Emulator is not necessarily cycle accurate)
         cpuTick(cycles);
+        cout << cycles << endl;
     }
 
     microseconds frameEnd = getUnixTimeMicroseconds();
