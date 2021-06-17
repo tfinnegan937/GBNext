@@ -7,7 +7,12 @@
 
 
 #include <cstdint>
+#include <memory>
 #include "CPU/RegisterUnion.h"
+#include "Memory/MemoryMap.h"
+
+using namespace std;
+
 class CPU {
 private:
     uint16_t SP = 0xFFFF;
@@ -32,8 +37,10 @@ private:
     RegisterUnion BC = RegisterUnion(&B, &C);
     RegisterUnion DE = RegisterUnion(&D, &E);
     RegisterUnion HL = RegisterUnion(&H, &L);
-public:
 
+    shared_ptr<MemoryMap> memory;
+public:
+    CPU(shared_ptr<MemoryMap> memoryMap);
 };
 
 

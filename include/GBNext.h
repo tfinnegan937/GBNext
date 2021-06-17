@@ -5,6 +5,7 @@
 #ifndef GBNEXT_GBNEXT_H
 #define GBNEXT_GBNEXT_H
 #include "Memory/MemoryMap.h"
+#include "CPU/CPU.h"
 #include <memory>
 #include <chrono>
 #include <fstream>
@@ -29,6 +30,8 @@ private:
 
     //Hardware Components
     shared_ptr<MemoryMap> memory;
+
+    unique_ptr<CPU> cpu;
 
     //Timer ticks
     microseconds deltaTimeM; //Time since start of last machine cycle

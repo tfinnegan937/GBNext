@@ -11,6 +11,7 @@ GBNext::GBNext() {
     deltaTimeM = microseconds(0);
     time = microseconds(0);
     state = EmulatorState::NoROM;
+    cpu = std::make_unique<CPU>(memory);
 }
 
 void GBNext::cpuTick(int &cycles) {

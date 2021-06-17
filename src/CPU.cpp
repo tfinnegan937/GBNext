@@ -3,3 +3,16 @@
 //
 
 #include "CPU/CPU.h"
+
+CPU::CPU(shared_ptr<MemoryMap> memoryMap) {
+    memory = memoryMap;
+
+    A = 0x00;
+    B = 0x00;
+    C = 0x00;
+    D = 0x00;
+    E = 0x00;
+    F = 0x00;
+    H = 0x00;
+    L = 0x00;
+}
