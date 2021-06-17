@@ -26,7 +26,7 @@ private:
     //They simply overload the binary and a few unary operators.
     //Assignment, Arithmetic, increment/decrement, and Boolean operators are supported
     //Assigning a RegisterUnion to a RegisterUnion will copy the pointers, not the values
-    //Assigning a value from a Register UnionBC to RegisterUnionAF would look like such:
+    //Assigning a value from RegisterUnion BC to RegisterUnion AF would look like such:
     //AF = BC.get()
     RegisterUnion AF = RegisterUnion(&A, &F);
     RegisterUnion BC = RegisterUnion(&B, &C);
