@@ -28,7 +28,8 @@ uint8_t MemoryMap::ReadAt(uint16_t location, bool ppuMode2) {
             readValue = OAM->ReadAt(location, ppuMode2);
             break;
         case TypeIO:
-            readValue = ioPorts->ReadAt(location, false);
+            //readValue = ioPorts->ReadAt(location, false);
+            readValue = 0xFF;
             break;
         case TypeVolatile:
             readValue = mainMemory->ReadAt(location, false);
@@ -60,7 +61,7 @@ void MemoryMap::WriteTo(uint8_t value, uint16_t location, bool ppuMode2) {
             OAM->WriteTo(value, location, ppuMode2);
             break;
         case TypeIO:
-            ioPorts->WriteTo(value, location, false); //TODO Implement I/O ports
+            //ioPorts->WriteTo(value, location, false); //TODO Implement I/O ports
             break;
         case TypeVolatile:
             mainMemory->WriteTo(value, location, false);

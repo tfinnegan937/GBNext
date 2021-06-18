@@ -41,7 +41,10 @@ private:
     shared_ptr<MemoryMap> memory;
 public:
     explicit CPU(shared_ptr<MemoryMap> memoryMap);
-    void Execute(int & cycles);
+    //Von Neumann Functions
+    uint8_t Fetch(int & cycles);
+    void DecodeAndExecute(uint8_t instruction, int & cycles);
+    void Tick(int & cycles);
 };
 
 

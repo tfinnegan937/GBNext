@@ -17,6 +17,16 @@ CPU::CPU(shared_ptr<MemoryMap> memoryMap) {
     L = 0x00;
 }
 
-void CPU::Execute(int & cycles) {
-    cycles--; //TODO PLACEHOLDER TO PREVENT HALT! Delete once instructions are implemented
+uint8_t CPU::Fetch(int& cycles) {
+    return memory->ReadAt(PC);
+}
+
+void CPU::Tick(int & cycles) {
+    uint8_t ins = Fetch(cycles);
+    DecodeAndExecute(ins, cycles); //Program Counter is Incremented in here
+}
+
+void CPU::DecodeAndExecute(uint8_t instruction, int & cycles) {
+    PC+=4; //TODO REMOVE AFTER IMPLEMENTING INSTRUCTIONS
+    cycles--; //TODO REMOVE AFTER IMPLEMENTING INSTRUCTIONS
 }
