@@ -7,7 +7,7 @@
 #include "CPU.h"
 #include "Macroes/InstructionTemplateIndexes.h"
 //The following syntax for a method pointer table was borrowed from the following file in destoer-emu
-//https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+//https://github.com/destoer/destoer-emu/blob/master/src/headers/gb/opcode_table.h
 //It was not copy-pasted, but it very much uses the same format.
 
 using OPCODE_HANDLER = void (CPU::*)(int&); //A pointer to a method of CPU that takes an int& variable
