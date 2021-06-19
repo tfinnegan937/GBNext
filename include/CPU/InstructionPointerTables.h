@@ -23,6 +23,41 @@ const OPCODE_HANDLER opcode_table[256] =
             &CPU::LD<REGB, IMMEDIATE8>,//06
             &CPU::RLCA, //07
             &CPU::LD<INDIRECTADDRESS16, REGSP>, //08
+            &CPU::ADD<REGHL, REGBC>, //09
+            &CPU::LD<REGA, REGINDBC>, //0A
+            &CPU::DEC<REGBC>, //0B
+            &CPU::INC<REGC>,  //0C
+            &CPU::DEC<REGC>, //0D
+            &CPU::LD<REGC, IMMEDIATE8>, //0E
+            &CPU::RRCA, //0F
+            &CPU::STOP, //10
+            &CPU::LD<REGDE, IMMEDIATE16>, //11
+            &CPU::LD<REGINDDE, REGA>, //12
+            &CPU::INC<REGDE>,//13
+            &CPU::INC<REGD>, //14
+            &CPU::DEC<REGD>, //15
+            &CPU::LD<REGD, IMMEDIATE8>,//16
+            &CPU::RLA, //17
+            &CPU::JR<JUMPNOCONDITION>, //18
+            &CPU::ADD<REGHL, REGDE>, //19
+            &CPU::LD<REGA, REGINDDE>, //1A
+            &CPU::DEC<REGDE>, //1B
+            &CPU::INC<REGE>, //1C
+            &CPU::DEC<REGE>, //1D
+            &CPU::LD<REGE, IMMEDIATE8>, //1E
+            &CPU::RRA, //1F
+            &CPU::JR<JUMPZRESET>, //20
+            &CPU::LD<REGHL, IMMEDIATE16>,//21
+            &CPU::LD<REGINDHLINC, REGA>, //22
+            &CPU::INC<REGHL>, //23
+            &CPU::INC<REGH>, //24
+            &CPU::DEC<REGH>, //25
+
+
+
+
+
+
             //TODO fill out opcode table
 
         };

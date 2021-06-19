@@ -71,7 +71,9 @@ public:
     void RLA(int & cycles);
 
     template<const int condition>
-    void JR (int & cycles);
+    void JR(int & cycles);
+
+    void RRA(int & cycles);
 
     void DAA(int & cycles);
 
