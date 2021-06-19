@@ -10,7 +10,7 @@
 //https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
 //It was not copy-pasted, but it very much uses the same format.
 
-using OPCODE_HANDLER = void (CPU::*)(int&);
+using OPCODE_HANDLER = void (CPU::*)(int&); //A pointer to a method of CPU that takes an int& variable
 
 const OPCODE_HANDLER opcode_table[256] =
         {

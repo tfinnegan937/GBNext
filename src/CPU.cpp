@@ -24,6 +24,7 @@ uint8_t CPU::Fetch(int& cycles) {
 
 void CPU::Tick(int & cycles) {
     uint8_t ins = Fetch(cycles);
+    cout << hex << (int)ins << endl;
     DecodeAndExecute(ins, cycles); //Program Counter is Incremented in here
 }
 
