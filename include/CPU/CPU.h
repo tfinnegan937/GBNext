@@ -46,8 +46,6 @@ public:
     void DecodeAndExecute(uint8_t instruction, int & cycles);
     void Tick(int & cycles);
 
-
-private:
     //CPU INSTRUCTIONS
     //They are ordered by when they first appear in this table: https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
     void NOP(int & cycles);

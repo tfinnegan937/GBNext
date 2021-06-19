@@ -1,8 +1,9 @@
 //
 // Created by plays on 6/16/2021.
 //
-
+#include <functional>
 #include "CPU/CPU.h"
+#include "CPU/InstructionPointerTables.h"
 
 CPU::CPU(shared_ptr<MemoryMap> memoryMap) {
     memory = memoryMap;
@@ -27,6 +28,29 @@ void CPU::Tick(int & cycles) {
 }
 
 void CPU::DecodeAndExecute(uint8_t instruction, int & cycles) {
-    PC+=4; //TODO REMOVE AFTER IMPLEMENTING INSTRUCTIONS
-    cycles--; //TODO REMOVE AFTER IMPLEMENTING INSTRUCTIONS
+    invoke(opcode_table[instruction], this, cycles);
+}
+
+void CPU::NOP(int &cycles) {
+    cycles += 4;
+    PC++;
+}
+
+template<const int firstType, const int secondType>
+void CPU::LD(int &cycles) {
+
+}
+
+template<const int type>
+void CPU::INC(int &cycles) {
+
+}
+
+template<const int type>
+void CPU::DEC(int &cycles) {
+
+}
+
+void CPU::RLCA(int &cycles) {
+
 }
