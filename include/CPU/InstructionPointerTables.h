@@ -52,7 +52,24 @@ const OPCODE_HANDLER opcode_table[256] =
             &CPU::INC<REGHL>, //23
             &CPU::INC<REGH>, //24
             &CPU::DEC<REGH>, //25
-
+            &CPU::LD<REGH, IMMEDIATE8>, //26
+            &CPU::DAA, //27
+            &CPU::JR<JUMPZSET>, //28
+            &CPU::ADD<REGHL, REGHL>, //29
+            &CPU::LD<REGA, REGINDHLINC>, //2A
+            &CPU::DEC<REGHL>, //2B
+            &CPU::INC<REGL>, //2C
+            &CPU::DEC<REGL>, //2D
+            &CPU::LD<REGL, IMMEDIATE8>, //2E
+            &CPU::CPL, //2F
+            &CPU::JR<JUMPCRESET>, //30
+            &CPU::LD<REGSP, IMMEDIATE16>, //31
+            &CPU::LD<REGINDHLDEC, REGA>, //32
+            &CPU::INC<REGSP>, //33
+            &CPU::INC<REGINDHL>, //34
+            &CPU::DEC<REGINDHL>, //35
+            &CPU::LD<REGINDHL, IMMEDIATE8>, //36
+            &CPU::SCF, //37
 
 
 
