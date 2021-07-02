@@ -79,7 +79,7 @@ public:
 
     void CPL(int & cycles);
 
-    void SCF(int & cycles);
+    void SFC(int & cycles);
 
     void CCF(int & cycles);
 
