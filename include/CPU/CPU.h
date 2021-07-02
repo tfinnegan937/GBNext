@@ -135,6 +135,8 @@ public:
 
     void EI(int & cycles);
 
+    void INVALIDINSTRUCTION(int & cycles);
+
     //CB PREFIXED INSTRUCTIONS
 
 
