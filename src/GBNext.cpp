@@ -2,7 +2,7 @@
 // Created by tfinnegan on 5/7/21.
 //
 
-#include "../include/GBNext.h"
+#include "GBNext.h"
 
 GBNext::GBNext() {
     memory = make_shared<MemoryMap>();
